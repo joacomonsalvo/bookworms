@@ -1,0 +1,9 @@
+Flask==3.0.3
+python-dotenv==1.0.1
+requests==2.31.0
+PyJWT==2.8.0
+gunicorn==21.2.0
+psycopg2-binary==2.9.9
+supabase==2.3.4
+resend==0.8.0
+APScheduler==3.10.4
