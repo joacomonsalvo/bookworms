@@ -1,37 +1,28 @@
-"""Welcome to Reflex! This file outlines the steps to create a basic app."""
+# app.py
 
 import reflex as rx
-
 from rxconfig import config
 
-
-class State(rx.State):
-    """The app state."""
+# Import views
+from BookWorms.views.login_view import login_view
+from BookWorms.views.signup_view import signup_view
 
 
 def index() -> rx.Component:
-    # Welcome Page (Index)
-    return rx.container(
-        rx.color_mode.button(position="top-right"),
+    """Basic landing page with links to auth pages."""
+    return rx.center(
         rx.vstack(
-            rx.heading("Welcome to Reflex!", size="9"),
-            rx.text(
-                "Get started by editing ",
-                rx.code(f"{config.app_name}/{config.app_name}.py"),
-                size="5",
-            ),
-            rx.link(
-                rx.button("Check out our docs!"),
-                href="https://reflex.dev/docs/getting-started/introduction/",
-                is_external=True,
-            ),
-            spacing="5",
-            justify="center",
-            min_height="85vh",
+            rx.heading("📚 BookWorms", size="9"),
+            rx.text("Welcome to the BookWorms app."),
+            rx.link(rx.button("Sign Up"), href="/signup"),
+            rx.link(rx.button("Log In"), href="/login"),
+            spacing="4",
         ),
-        rx.logo(),
+        min_height="100vh"
     )
 
 
 app = rx.App()
-app.add_page(index)
+app.add_page(index, route="/", title="Home")
+app.add_page(signup_view, route="/signup", title="Sign Up")
+app.add_page(login_view, route="/login", title="Login")
