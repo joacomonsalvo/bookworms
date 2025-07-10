@@ -6,6 +6,7 @@ from rxconfig import config
 from BookWorms.views.login_view import login_view
 from BookWorms.views.signup_view import signup_view
 from BookWorms.views.feed_view import feed_page
+from BookWorms.views.new_post_view import new_post_view
 
 
 def index() -> rx.Component:
@@ -27,3 +28,4 @@ app.add_page(index, route="/", title="Home")
 app.add_page(signup_view, route="/signup", title="Sign Up")
 app.add_page(login_view, route="/login", title="Login")
 app.add_page(feed_page, route="/feed", title="Feed")
+app.add_page(new_post_view, route="/new_post", title="Nuevo Posteo")

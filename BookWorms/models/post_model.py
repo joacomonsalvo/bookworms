@@ -38,3 +38,19 @@ class Post:
         # Delete the post
         delete_response = User.supabase_client().table("publicaciones").delete().eq("id", post_id).execute()
         return True
+
+    @staticmethod
+    def create_post(title: str, text: str, author_id: int) -> bool:
+        """Insert a new post into the publicaciones table."""
+        from datetime import datetime
+        now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+        post_data = {
+            "titulo": title,
+            "text": text,
+            "author": author_id,
+            "fecha": now
+        }
+        # Defensive: Remove 'id' if present
+        post_data.pop("id", None)
+        response = User.supabase_client().table("publicaciones").insert(post_data).execute()
+        return hasattr(response, "data") and bool(response.data)

@@ -13,12 +13,24 @@ class AuthState(rx.State):
     current_user_id: int | None = None
     current_username: str = ""
     show_logout_confirm: bool = False
+    local_storage: dict = {}
 
     def register(self):
         success, msg = AuthController.register_user(self.email, self.username, self.password)
         self.message = msg
         if success:
             self.reset_fields()
+
+    def save_auth_to_storage(self):
+        self.local_storage["is_logged_in"] = self.is_logged_in
+        self.local_storage["current_user_id"] = self.current_user_id
+        self.local_storage["current_username"] = self.current_username
+
+    def load_auth_from_storage(self):
+        if self.local_storage.get("is_logged_in") and self.local_storage.get("current_user_id") and self.local_storage.get("current_username"):
+            self.is_logged_in = True
+            self.current_user_id = int(self.local_storage.get("current_user_id"))
+            self.current_username = self.local_storage.get("current_username")
 
     def login(self):
         success, msg, user_data = AuthController.login_user(self.username, self.password)
@@ -27,6 +39,7 @@ class AuthState(rx.State):
         if success:
             self.current_user_id = user_data['id']
             self.current_username = user_data['user']
+            self.save_auth_to_storage()
             self.reset_fields()
             return rx.redirect("/feed")
 
@@ -46,6 +59,7 @@ class AuthState(rx.State):
         self.current_username = ""
         self.show_logout_confirm = False
         self.message = ""  # Clear any existing messages
+        self.local_storage.clear()
         return rx.redirect("/login")
 
     def cancel_logout(self):

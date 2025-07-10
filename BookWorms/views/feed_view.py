@@ -112,6 +112,7 @@ def feed_page() -> rx.Component:
         feed_view(),
         delete_confirmation_dialog(),
         logout_confirmation_dialog(),
+        on_mount=AuthState.load_auth_from_storage,
     )
 
 def delete_confirmation_dialog() -> rx.Component:
