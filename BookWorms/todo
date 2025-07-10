@@ -1,2 +1,5 @@
 - todas las interfaces
 - No resetea mensaje de exito post login al recargar la pagina
+- Mover all lo que hay en /state a /models
+- Mover all lo que hay en /utils a /models
+- Activar y probar RLS

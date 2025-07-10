@@ -10,6 +10,7 @@ def login_view():
         rx.input(placeholder="Password", type_="password", on_change=AuthState.set_password),
         rx.button("Login", on_click=AuthState.login),
         rx.text(AuthState.message, color="red"),
+        on_mount=AuthState.clear_message,
     ),
         min_height="100vh"
     )

@@ -20,13 +20,13 @@ class AuthController:
         return True, "Registration successful."
 
     @staticmethod
-    def login_user(username: str, password: str) -> tuple[bool, str]:
+    def login_user(username: str, password: str) -> tuple[bool, str, dict]:
         user = User.get_user_by_username(username)
 
         if not user:
-            return False, "Invalid credentials."
+            return False, "Invalid credentials.", {}
 
         if not verify_password(password, user[0]['passw']):
-            return False, "Invalid credentials."
+            return False, "Invalid credentials.", {}
 
-        return True, "Login successful."
+        return True, "Login successful.", user[0]
