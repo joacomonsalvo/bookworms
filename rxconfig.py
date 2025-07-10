@@ -6,4 +6,8 @@ config = rx.Config(
         rx.plugins.SitemapPlugin(),
         rx.plugins.TailwindV4Plugin(),
     ],
+    pages={
+        "/":       "BookWorms.views.feed_view.feed_page",
+        "/search": "BookWorms.views.search_result_view.search_result_page",
+    },
 )
