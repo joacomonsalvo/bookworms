@@ -1,6 +1,6 @@
 import reflex as rx
 from BookWorms.state.auth_state import AuthState
-from BookWorms.models.post_model import Post  # Deberás crear este archivo/modelo
+from BookWorms.models.post_model import Post
 from BookWorms.state.search_state import SearchState
 
 
@@ -17,10 +17,9 @@ def navbar() -> rx.Component:
         rx.button(
             "Buscar",
             color_scheme="blue",
-             # al hacer click, primero busca y luego navega a /search
-            on_click = [
-                SearchState.buscar,
-                rx.redirect("/search")
+            on_click=[  # Sólo seteamos la query y navegamos
+                SearchState.buscar,  # Guarda self.resultados en el estado
+                rx.redirect("/search")  # Cambia a /search
             ]
         ),
         rx.link("Amigos", href="/friends", ml="4"),
@@ -145,17 +144,6 @@ def feed_view() -> rx.Component:
         AuthState.is_logged_in,
         rx.vstack(
             navbar(),
-
-            # 🔍 Mostrar resultados de búsqueda si existen
-            rx.cond(
-                SearchState.resultados != [],
-                rx.vstack(
-                    rx.heading("Resultados de búsqueda", size="5", padding_top="1rem"),
-                    rx.foreach(SearchState.resultados, render_result_card)
-                ),
-                rx.text("")  # Si no hay resultados, no muestra nada
-            ),
-
             rx.heading("Feed", size="6", padding_top="1rem"),
             rx.foreach(FeedState.posts, post_card),
             padding="2rem",
