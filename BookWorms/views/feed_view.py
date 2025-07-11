@@ -1,14 +1,27 @@
 import reflex as rx
 from BookWorms.state.auth_state import AuthState
-from BookWorms.models.post_model import Post  # Deberás crear este archivo/modelo
+from BookWorms.models.post_model import Post
+from BookWorms.state.search_state import SearchState
+
 
 
 def navbar() -> rx.Component:
     return rx.hstack(
         rx.text("BookWorms Feed", font_size="8", font_weight="bold"),
         rx.spacer(),
-        rx.input(placeholder="Buscar...", width="200px"),
-        rx.button("Buscar", color_scheme="blue"),
+        rx.input(
+            placeholder="Buscar...",
+            width="200px",
+            on_change=SearchState.set_query
+        ),
+        rx.button(
+            "Buscar",
+            color_scheme="blue",
+            on_click=[  # Sólo seteamos la query y navegamos
+                SearchState.buscar,  # Guarda self.resultados en el estado
+                rx.redirect("/search")  # Cambia a /search
+            ]
+        ),
         rx.link("Amigos", href="/friends", ml="4"),
         rx.link("Listas", href="/lists", ml="4"),
         rx.link("Nuevo Posteo", href="/new_post", ml="4"),
@@ -48,6 +61,38 @@ def post_card(post: dict) -> rx.Component:
         box_shadow="md",
         border_radius="xl"
     )
+
+def render_result_card(item) -> rx.Component:
+    # Asegurar que `data` es un dict válido
+    data = getattr(item, "_var_data", item)
+    if not isinstance(data, dict):
+        data = {}
+
+    if "titulo" in data:
+        # Es un libro
+        return rx.card(
+            rx.vstack(
+                rx.heading(data.get("titulo", "Sin título"), size="4"),
+                rx.text(data.get("sinopsis", "Sinopsis no disponible")),
+                rx.button("Agregar a mi lista", disabled=True)
+            ),
+            margin_y="1rem"
+        )
+    elif "user" in data:
+        # Es un usuario
+        return rx.card(
+            rx.vstack(
+                rx.heading(data.get("user", "Usuario desconocido"), size="4"),
+                rx.text(data.get("email", "Email no disponible")),
+            ),
+            margin_y="1rem"
+        )
+    else:
+        # Por si llega un dato inesperado
+        return rx.text("Elemento no reconocido")
+
+
+
 
 
 class FeedState(rx.State):
@@ -106,6 +151,7 @@ def feed_view() -> rx.Component:
         ),
         rx.script("window.location.href = '/login'")
     )
+
 
 def feed_page() -> rx.Component:
     return rx.box(

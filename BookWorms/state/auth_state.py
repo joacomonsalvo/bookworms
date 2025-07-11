@@ -4,6 +4,7 @@ import reflex as rx
 from BookWorms.controllers.auth_controller import AuthController
 
 
+
 class AuthState(rx.State):
     username: str
     password: str
