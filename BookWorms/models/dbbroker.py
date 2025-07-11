@@ -20,7 +20,8 @@ class DBBroker:
         result = self.supabase.table("usuarios").insert({
             "email": email,
             "user": username,
-            "passw": password_hash
+            "passw": password_hash,
+            "amigos": []
         }).execute()
 
         return result.data[0]
@@ -60,3 +61,16 @@ class DBBroker:
         #print("🔎 Resultado raw de Supabase:", result.data)
         return result.data or []
 
+    def eliminar_amigo(supabase, user_id: int, amigo_id: int):
+        result = supabase.table("usuarios").select("amigos").eq("id", user_id).single().execute()
+        amigos = result.data["amigos"]
+
+        amigos_int = list(map(int, amigos)) if amigos else []
+
+        if amigo_id in amigos_int:
+            amigos_int.remove(amigo_id)
+
+        amigos_str = list(map(str, amigos_int))
+
+        supabase.table("usuarios").update({
+            "amigos": amigos_str}).eq("id", user_id).execute()

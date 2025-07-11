@@ -1,15 +1,18 @@
 Por hacer (HACER CON MVC):
-- Funcionamiento barra de busqueda con boton (@ para buscar usuarios, nada para buscar libros)
-- Interfaz y logica de resultados de busqueda
++ Funcionamiento barra de busqueda con boton (@ para buscar usuarios, nada para buscar libros)
++ Interfaz y logica de resultados de busqueda
+
 - interfaz y logica de perfil de usuario
 - interfaz y logica de libro
 - interfaz comentarios (debe de tener arriba del todo el post en cuestion, y debajo un input para escribir el comentario, y un boton para enviarlo, y debajo un listado de comentarios)
 - logica comentarios con tabla DB (crear y eliminar comentario, mientras haya sido creado por el mismo usuario)
 - linkear interfaz de comentarios y su logica con la de los posts
 - interfaz de perfil de usuario (Ajustes) + logica y guardar en DB
+
 - Interfaz de amigos, logica y guardar en DB (Esta interfaz debe listar a los amigos del usuario y permitir eliminarlos, para agregar, debe de buscarlos y la interfaz de perfil de usuario debe tener opcion para agregar amigos)
-- Interfaz de listas, logica y guardar en DB (Esta interfaz debe de estar separada en dos partes, la izquierda que liste las listas publicas y la derecha que liste las listas privadas, con la posibilidad de crear, eliminar o acceder a dicha lista))
-- Interfaz de lista, esta vista debe listar todos los libros contenidos en una lista publica, en caso de que sea privada, debe hacer lo mismo pero ademas posibilitar eliminar un libro en especifico. Para agregar libros, debe de buscarlos y en la vista del detalle del libro agregarlo a la lista)
+
+- Interfaz de listas, logica y guardar en DB (Esta interfaz debe de estar separada en dos partes, la izquierda que liste las listas publicas y la derecha que liste las listas privadas, con la posibilidad de crear, eliminar o acceder a dicha lista)
+- Interfaz de lista, esta vista debe listar todos los libros contenidos en una lista publica, en caso de que sea privada, debe hacer lo mismo pero ademas posibilitar eliminar un libro en especifico. Para agregar libros, debe de buscarlos y en la vista del detalle del libro agregarlo a la lista
 - Agregar interfaz y funcionalidad de olvide mi contraseña, permitiendo recuperarla si acierta el email con el q se creo la cuenta.
 - Dentro de la vista libro, debe de permitirle al usuario dejar una review, mismo limite de palabras que posts.
 - Interfaz review, accedible desde libro.
