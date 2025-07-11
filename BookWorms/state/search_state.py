@@ -6,14 +6,6 @@ class SearchState(rx.State):
     query: str = ""
     resultados: List[Dict[str, Any]] = []  # ← ahora es un Var tipado
 
-    '''def buscar(self):
-        db = DBBroker()
-        #print("⚙️ SearchState.buscar – query actual:", self.query)
-        if self.query.startswith("@"):
-            username = self.query[1:]
-            self.resultados = db.buscar_usuarios(username)
-        else:
-            self.resultados = db.buscar_libros(self.query)'''
 
     def buscar(self):
         db = DBBroker()

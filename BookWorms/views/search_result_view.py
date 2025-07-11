@@ -27,7 +27,8 @@ def render_search_result(item) -> rx.Component:
     else:
         # no debería llegar aquí si hay datos correctos
         return rx.text("No se reconoce el elemento", color="red")
-
+        '''
+'''
 def search_result_page() -> rx.Component:
     return rx.vstack(
         rx.heading("Resultados de búsqueda", size="6", padding_top="1rem"),
@@ -74,7 +75,7 @@ def search_result_page() -> rx.Component:
         ),
 
         # 2) Después tu título de resultados
-        #rx.heading("Resultados de búsqueda", size="6", padding_top="1rem"),
+        rx.heading("Resultados de búsqueda", size="6", padding_top="1rem"),
 
         # Si la query empieza con "@", renderiza usuarios, si no, libros
         rx.cond(

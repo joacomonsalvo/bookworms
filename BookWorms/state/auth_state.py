@@ -1,8 +1,5 @@
-# state/auth_state.py
-
 import reflex as rx
 from BookWorms.controllers.auth_controller import AuthController
-
 
 
 class AuthState(rx.State):

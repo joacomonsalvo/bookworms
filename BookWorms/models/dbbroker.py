@@ -9,8 +9,9 @@ class DBBroker:
         dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
         load_dotenv(dotenv_path)
 
-        SUPABASE_URL = 'https://gpxgzundtgiefumaybfg.supabase.co'
-        SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdweGd6dW5kdGdpZWZ1bWF5YmZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwMDgzNjAsImV4cCI6MjA2NzU4NDM2MH0.EpxS2a35JiiZQlobD2R13_bMFEucwKsQ4CWK3A-0d0k'
+        SUPABASE_URL = os.getenv("SUPABASE_URL")
+        SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
         self.supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
     def create_user(self, email: str, username: str, password: str):
