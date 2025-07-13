@@ -1,45 +1,6 @@
 import reflex as rx
 from BookWorms.state.search_state import SearchState
 
-def render_search_result(item) -> rx.Component:
-    '''
-    data = getattr(item, "_var_data", item) or {}
-    if "titulo" in data:
-        return rx.card(
-            rx.vstack(
-                rx.heading(data["titulo"], size="5"),
-                rx.text(f"ISBN: {data.get('isbn','–')}"),
-                rx.text(f"Autor: {data.get('autor','–')}"),
-                rx.text(f"Editorial: {data.get('editorial','–')}"),
-                rx.text(data.get("sinopsis","–")),
-                rx.button("Agregar a lista privada", color_scheme="green", size="sm"),
-            ),
-            margin_y="1rem",
-        )
-    elif "user" in data:
-        return rx.card(
-            rx.vstack(
-                rx.heading(data["user"], size="5"),
-                rx.text(f"Email: {data.get('email','–')}"),
-            ),
-            margin_y="1rem",
-        )
-    else:
-        # no debería llegar aquí si hay datos correctos
-        return rx.text("No se reconoce el elemento", color="red")
-        '''
-'''
-def search_result_page() -> rx.Component:
-    return rx.vstack(
-        rx.heading("Resultados de búsqueda", size="6", padding_top="1rem"),
-        rx.cond(
-            SearchState.resultados,
-            rx.foreach(SearchState.resultados, render_search_result),
-            rx.text("No se encontraron resultados.", color="gray"),
-        ),
-        padding="2rem",
-        on_mount=SearchState.buscar,   # ← aquí forzamos la búsqueda al entrar
-    )'''
 
 def render_book_card(book) -> rx.Component:
     return rx.card(
@@ -54,6 +15,7 @@ def render_book_card(book) -> rx.Component:
         margin_y="1rem",
     )
 
+
 def render_user_card(user) -> rx.Component:
     return rx.card(
         rx.vstack(
@@ -62,6 +24,7 @@ def render_user_card(user) -> rx.Component:
         ),
         margin_y="1rem",
     )
+
 
 def search_result_page() -> rx.Component:
     return rx.vstack(

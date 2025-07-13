@@ -9,10 +9,7 @@ class DBBroker:
         dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
         load_dotenv(dotenv_path)
 
-        SUPABASE_URL = os.getenv("SUPABASE_URL")
-        SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-
-        self.supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+        self.supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 
     def create_user(self, email: str, username: str, password: str):
         password_hash = hash_password(password)
@@ -39,7 +36,7 @@ class DBBroker:
     def buscar_libros(self, texto: str):
         # Armar patrón ILIKE
         pattern = f"%{texto}%"
-        #print("🔍 dbbroker.buscar_libros – patrón:", pattern)
+        # print("🔍 dbbroker.buscar_libros – patrón:", pattern)
 
         result = (
             self.supabase
@@ -48,17 +45,17 @@ class DBBroker:
             .ilike("titulo", pattern)
             .execute()
         )
-        #print("🔎 dbbroker.buscar_libros – resultado:", result.data)
+        # print("🔎 dbbroker.buscar_libros – resultado:", result.data)
         return result.data or []
 
     def buscar_usuarios(self, username: str):
         pattern = f"%{username.lower()}%"
-        #print("🔍 Buscando usuarios con patrón:", pattern)
-        result = self.supabase.table("usuarios")\
-            .select("*")\
-            .ilike("user", pattern)\
+        # print("🔍 Buscando usuarios con patrón:", pattern)
+        result = self.supabase.table("usuarios") \
+            .select("*") \
+            .ilike("user", pattern) \
             .execute()
-        #print("🔎 Resultado raw de Supabase:", result.data)
+        # print("🔎 Resultado raw de Supabase:", result.data)
         return result.data or []
 
     def eliminar_amigo(self, user_id: int, amigo_id: int):
@@ -108,4 +105,3 @@ class DBBroker:
             .execute()
 
         return result.data[0]["current_user"] if result.data else None
-

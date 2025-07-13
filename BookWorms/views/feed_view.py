@@ -4,7 +4,6 @@ from BookWorms.models.post_model import Post
 from BookWorms.state.search_state import SearchState
 
 
-
 def navbar() -> rx.Component:
     return rx.hstack(
         rx.text("BookWorms Feed", font_size="8", font_weight="bold"),
@@ -23,7 +22,7 @@ def navbar() -> rx.Component:
             ]
         ),
         rx.link("Amigos", href="/amigos", ml="4"),
-        rx.link("Listas", href="/lists", ml="4"),
+        rx.link("Listas", href="/listas", ml="4"),
         rx.link("Nuevo Posteo", href="/new_post", ml="4"),
         rx.link("Perfil", href="/profile", ml="4"),
         rx.button("🚪 Cerrar Sesión", color_scheme="red", on_click=AuthState.open_logout_dialog, ml="4"),
@@ -50,7 +49,8 @@ def post_card(post: dict) -> rx.Component:
                 rx.text(f"Autor: {post['author']}", font_size="1", color="gray"),
                 rx.cond(
                     AuthState.current_username == post["author"],
-                    rx.button("🗑️ Eliminar", size="2", color_scheme="red", on_click=FeedState.show_delete_dialog(post["id"])),
+                    rx.button("🗑️ Eliminar", size="2", color_scheme="red",
+                              on_click=FeedState.show_delete_dialog(post["id"])),
                     rx.text("")
                 ),
             ),
@@ -61,6 +61,7 @@ def post_card(post: dict) -> rx.Component:
         box_shadow="md",
         border_radius="xl"
     )
+
 
 def render_result_card(item) -> rx.Component:
     # Asegurar que `data` es un dict válido
@@ -90,9 +91,6 @@ def render_result_card(item) -> rx.Component:
     else:
         # Por si llega un dato inesperado
         return rx.text("Elemento no reconocido")
-
-
-
 
 
 class FeedState(rx.State):
@@ -157,6 +155,7 @@ def feed_page() -> rx.Component:
         on_mount=AuthState.load_auth_from_storage,
     )
 
+
 def delete_confirmation_dialog() -> rx.Component:
     return rx.cond(
         FeedState.show_delete_confirm,
@@ -164,10 +163,12 @@ def delete_confirmation_dialog() -> rx.Component:
             rx.box(
                 rx.vstack(
                     rx.heading("Confirmar eliminación", size="4"),
-                    rx.text("¿Estás seguro de que quieres eliminar esta publicación? Esta acción no se puede deshacer."),
+                    rx.text(
+                        "¿Estás seguro de que quieres eliminar esta publicación? Esta acción no se puede deshacer."),
                     rx.hstack(
                         rx.button("Cancelar", on_click=FeedState.cancel_delete),
-                        rx.button("Eliminar", color_scheme="red", on_click=FeedState.confirm_delete_with_user_id(AuthState.current_user_id), ml="3"),
+                        rx.button("Eliminar", color_scheme="red",
+                                  on_click=FeedState.confirm_delete_with_user_id(AuthState.current_user_id), ml="3"),
                     ),
                     spacing="4",
                     padding="2rem",
@@ -195,6 +196,7 @@ def delete_confirmation_dialog() -> rx.Component:
         ),
         rx.text("")
     )
+
 
 def logout_confirmation_dialog() -> rx.Component:
     return rx.cond(
@@ -234,7 +236,3 @@ def logout_confirmation_dialog() -> rx.Component:
         ),
         rx.text("")
     )
-
-
-
-
