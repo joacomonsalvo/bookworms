@@ -134,10 +134,6 @@ class FeedState(rx.State):
         self.show_delete_confirm = False
         self.post_to_delete = None
 
-    def get_current_user_id(self) -> int | None:
-        """Get the current user ID from AuthState"""
-        return AuthState.current_user_id
-
 
 def feed_view() -> rx.Component:
     return rx.cond(

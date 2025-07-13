@@ -61,16 +61,51 @@ class DBBroker:
         #print("🔎 Resultado raw de Supabase:", result.data)
         return result.data or []
 
-    def eliminar_amigo(supabase, user_id: int, amigo_id: int):
-        result = supabase.table("usuarios").select("amigos").eq("id", user_id).single().execute()
+    def eliminar_amigo(self, user_id: int, amigo_id: int):
+        result = self.supabase.table("usuarios").select("amigos").eq("id", user_id).single().execute()
         amigos = result.data["amigos"]
 
         amigos_int = list(map(int, amigos)) if amigos else []
+
+        print(amigos_int)
 
         if amigo_id in amigos_int:
             amigos_int.remove(amigo_id)
 
         amigos_str = list(map(str, amigos_int))
 
-        supabase.table("usuarios").update({
+        self.supabase.table("usuarios").update({
             "amigos": amigos_str}).eq("id", user_id).execute()
+
+    def get_amigos_from_user_id(self, user_id: str) -> list:
+        """"
+        Dado un ID de usuario, devuelve los nombres de usuario de sus amigos.
+        """
+        result = self.supabase.table("usuarios").select("amigos").eq("id", user_id).single().execute()
+        amigos = result.data["amigos"]
+
+        amigos_int = list(map(int, amigos)) if amigos else []
+        lista_amigos = []
+
+        for i in amigos_int:
+            amigo = self.get_user_by_id(i)["user"]
+            lista_amigos.append(amigo)
+
+        return lista_amigos
+
+    def insert_current_user(self, current_user: str):
+        result = self.supabase.table("current_user").insert({
+            "current_user": current_user
+        }).execute()
+
+        return result.data
+
+    def get_last_current_user(self):
+        result = self.supabase.table("current_user") \
+            .select("current_user") \
+            .order("id", desc=True) \
+            .limit(1) \
+            .execute()
+
+        return result.data[0]["current_user"] if result.data else None
+

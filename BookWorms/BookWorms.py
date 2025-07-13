@@ -8,6 +8,7 @@ from BookWorms.views.signup_view import signup_view
 from BookWorms.views.feed_view import feed_page
 from BookWorms.views.new_post_view import new_post_view
 from BookWorms.views.search_result_view import search_result_page
+from BookWorms.views.amigos_view import amigos_view
 
 
 def index() -> rx.Component:
@@ -31,3 +32,5 @@ app.add_page(login_view, route="/login", title="Login")
 app.add_page(feed_page, route="/feed", title="Feed")
 app.add_page(new_post_view, route="/new_post", title="Nuevo Posteo")
 app.add_page(search_result_page, route="/search", title="Resultado Busqueda")
+app.add_page(amigos_view, route="/amigos", title="Amigos")
+

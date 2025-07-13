@@ -1,5 +1,6 @@
 import reflex as rx
 from BookWorms.controllers.auth_controller import AuthController
+from BookWorms.models.dbbroker import DBBroker
 
 
 class AuthState(rx.State):
@@ -32,6 +33,11 @@ class AuthState(rx.State):
 
     def login(self):
         success, msg, user_data = AuthController.login_user(self.username, self.password)
+
+        db = DBBroker()
+        db.insert_current_user(self.username)
+        del db
+
         self.message = msg
         self.is_logged_in = success
         if success:
