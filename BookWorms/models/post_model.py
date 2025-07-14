@@ -1,15 +1,25 @@
 from BookWorms.models.user_model import User
 from datetime import datetime
+from BookWorms.models.dbbroker import DBBroker
 
 
 class Post:
     @staticmethod
     def get_all_posts():
+        db = DBBroker()
         response = User.supabase_client().table("publicaciones").select("*").order("fecha", desc=True).execute()
+
+        user_id = db.get_user_by_username(str(db.get_last_current_user()))[0]['id']
+        amigos_ids = User.supabase_client().table("usuarios").select("amigos").eq("id", user_id).single().execute().data["amigos"]
+        amigos_int = list(map(int, amigos_ids)) if amigos_ids else []
+        del db
+
+        autorizados = set([int(user_id)] + [int(aid) for aid in amigos_int])
+        result_filtrado = [post for post in response.data if post['author'] in autorizados]
+
         if hasattr(response, "data") and response.data:
             posts = []
-            for p in response.data:
-                # Get the username for the author
+            for p in result_filtrado:
                 user = User.get_user_by_id(p["author"])
                 username = user["user"] if user else f"User {p['author']}"
                 
