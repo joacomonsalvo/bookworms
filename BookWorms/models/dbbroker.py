@@ -18,7 +18,8 @@ class DBBroker:
             "email": email,
             "user": username,
             "passw": password_hash,
-            "amigos": []
+            "amigos": [],
+            "es_admin": False
         }).execute()
 
         return result.data[0]
@@ -117,3 +118,25 @@ class DBBroker:
             .execute()
 
         return result.data[0]["current_user"] if result.data else None
+
+    def alta_libro(self, titulo, isbn, autor, editorial, sinopsis):
+        self.supabase.table("libros").insert({
+            "titulo": titulo,
+            "isbn": int(isbn),
+            "autor": autor,
+            "editorial": editorial,
+            "sinopsis": sinopsis
+        }).execute()
+
+    def baja_libro(self, isbn):
+        self.supabase.table("libros").delete().eq("isbn", int(isbn)).execute()
+
+    def es_admin(self, username):
+        result = self.supabase.table("usuarios").select("*").eq("user", username).execute()
+        result = result.data[0]["es_admin"]
+
+        if result:
+            return True
+        else:
+            return False
+

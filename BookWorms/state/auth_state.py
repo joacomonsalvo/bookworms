@@ -13,6 +13,7 @@ class AuthState(rx.State):
     current_username: str = ""
     show_logout_confirm: bool = False
     local_storage: dict = {}
+    is_admin: bool = False
 
     def register(self):
         success, msg = AuthController.register_user(self.email, self.username, self.password)
@@ -36,15 +37,16 @@ class AuthState(rx.State):
 
         db = DBBroker()
         db.insert_current_user(self.username)
-        del db
 
         self.message = msg
         self.is_logged_in = success
         if success:
             self.current_user_id = user_data['id']
             self.current_username = user_data['user']
+            self.is_admin = db.es_admin(username=self.username)
             self.save_auth_to_storage()
             self.reset_fields()
+            del db
             return rx.redirect("/feed")
 
     def reset_fields(self):

@@ -7,6 +7,7 @@ from BookWorms.views.new_post_view import new_post_view
 from BookWorms.views.search_result_view import search_result_page
 from BookWorms.views.amigos_view import amigos_view
 from BookWorms.views.listas_view import listas_view
+from BookWorms.views.ab_libro_view import ab_libros_view
 
 
 def index() -> rx.Component:
@@ -32,3 +33,4 @@ app.add_page(new_post_view, route="/new_post", title="Nuevo Posteo")
 app.add_page(search_result_page, route="/search", title="Resultado Busqueda")
 app.add_page(listas_view, route="/listas", title="Listas")
 app.add_page(amigos_view, route="/amigos", title="Amigos")
+app.add_page(ab_libros_view, route="/ab_libro", title="AB Libro")
