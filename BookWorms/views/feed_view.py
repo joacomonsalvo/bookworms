@@ -21,6 +21,7 @@ def navbar() -> rx.Component:
                 rx.redirect("/search")  # Cambia a /search
             ]
         ),
+        rx.link("Feed", href="/feed", ml=4),
         rx.link("Amigos", href="/amigos", ml="4"),
         rx.link("Listas", href="/listas", ml="4"),
         rx.link("Nuevo Posteo", href="/new_post", ml="4"),

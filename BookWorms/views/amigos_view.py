@@ -8,15 +8,13 @@ from BookWorms.views.feed_view import navbar
 def render_user_card(user) -> rx.Component:
     return rx.card(
         rx.vstack(
-            rx.heading(user["user"], size="5"),
-            rx.text(f"Email: {user['username']}"),
+            rx.heading(user["username"], size="6"),
             rx.button(
                 "Eliminar amigo", 
                 color_scheme="red", 
                 size="2",
                 on_click=lambda: AmigosState.eliminar_amigo(
-                    AmigosState.get_current_user_id(),
-                    user['id']
+                    amigo_username=user['username']
                 )
             ),
         ),

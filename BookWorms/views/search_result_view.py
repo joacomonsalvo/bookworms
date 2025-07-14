@@ -1,5 +1,6 @@
 import reflex as rx
 from BookWorms.state.search_state import SearchState
+from BookWorms.state.amigos_state import AmigosState
 
 
 def render_book_card(book) -> rx.Component:
@@ -21,6 +22,14 @@ def render_user_card(user) -> rx.Component:
         rx.vstack(
             rx.heading(user["user"], size="5"),
             rx.text(f"Email: {user['email']}"),
+        ),
+        rx.button(
+            "Agregar amigo",
+            color_scheme="red",
+            size="2",
+            on_click=AmigosState.agregar_amigo(
+                amigo_username=user['user']
+            )
         ),
         margin_y="1rem",
     )

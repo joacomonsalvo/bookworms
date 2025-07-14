@@ -17,6 +17,13 @@ FELI:
 - Dentro de la vista libro, debe de permitirle al usuario dejar una review, mismo limite de palabras que posts.
 - Interfaz review, accedible desde libro.
 
+-AB LIBROS
+-AB COMENTARIO
+-AB LIKE
+-Reporte Libro Más Leído
+-Reporte usuario Más Seguido
+-Sincronización
+
 
 Por hacer AL FINAL:
 - Mover all lo que hay en /state a /models

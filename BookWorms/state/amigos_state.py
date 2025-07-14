@@ -26,17 +26,24 @@ class AmigosState(rx.State):
         self.get_friends()
         return rx.redirect("/amigos")
 
-    def get_current_user_id(self):
-        db = DBBroker()
-        username = db.get_last_current_user()
-        user = db.get_user_by_username(str(username))
-        del db
-        return user[0]['id'] if user else None
+    @staticmethod
+    def get_current_user_id(db):
+        return db.get_user_by_username(str(db.get_last_current_user()))[0]['id']
 
-    def eliminar_amigo(self, user_id, amigo_id):
+    def eliminar_amigo(self, amigo_username: str):
         db = DBBroker()
-        db.eliminar_amigo(user_id, amigo_id)
+        current_user_id = AmigosState.get_current_user_id(db)
+        amigo_id = db.get_user_by_username(str(amigo_username))[0]['id']
+        db.eliminar_amigo(current_user_id, amigo_id)
+
         del db
-        # Refresh the friends list after deletion
         return self.get_friends_and_redirect()
 
+    def agregar_amigo(self, amigo_username: str):
+        db = DBBroker()
+        current_user_id = AmigosState.get_current_user_id(db)
+        amigo_id = db.get_user_by_username(str(amigo_username))[0]['id']
+        db.agregar_amigo(current_user_id, amigo_id)
+
+        del db
+        return self.get_friends_and_redirect()
