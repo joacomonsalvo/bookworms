@@ -1,5 +1,5 @@
 #!/bin/bash
 
 #!/bin/bash
-reflex run --port $PORT --env prod --loglevel info
+reflex run --env prod --loglevel info --backend-port $PORT
 
