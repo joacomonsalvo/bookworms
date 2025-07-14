@@ -1,6 +1,8 @@
 import reflex as rx
 from BookWorms.state.auth_state import AuthState
 from BookWorms.models.post_model import Post
+from BookWorms.views.navbar import navbar
+
 
 class NewPostState(AuthState):
     title: str = ""
@@ -41,6 +43,7 @@ class NewPostState(AuthState):
         self.text = ""
         self.error = ""
         return rx.redirect("/feed")
+
 
 def new_post_view() -> rx.Component:
     # Redirect to login if not logged in

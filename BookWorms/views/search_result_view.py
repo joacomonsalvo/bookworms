@@ -1,6 +1,7 @@
 import reflex as rx
 from BookWorms.state.search_state import SearchState
 from BookWorms.state.amigos_state import AmigosState
+from BookWorms.views.navbar import navbar
 
 
 def render_book_card(book) -> rx.Component:
@@ -37,6 +38,7 @@ def render_user_card(user) -> rx.Component:
 
 def search_result_page() -> rx.Component:
     return rx.vstack(
+        navbar(),
         # 1) ESTE LINK VA AQUÍ, justo al principio de la página:
         rx.link(
             "← Volver a la página principal",

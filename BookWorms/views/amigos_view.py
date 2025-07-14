@@ -2,7 +2,7 @@ import reflex as rx
 
 from BookWorms.state.auth_state import AuthState
 from BookWorms.state.amigos_state import AmigosState
-from BookWorms.views.feed_view import navbar
+from BookWorms.views.navbar import navbar
 
 
 def render_user_card(user) -> rx.Component:

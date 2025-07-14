@@ -1,6 +1,6 @@
 import reflex as rx
 from BookWorms.state.ab_libro_state import ABLibroState
-from BookWorms.views.feed_view import navbar
+from BookWorms.views.navbar import navbar
 
 
 def ab_libros_view() -> rx.Component:
