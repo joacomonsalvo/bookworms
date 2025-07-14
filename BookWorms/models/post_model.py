@@ -29,6 +29,7 @@ class Post:
                     "titulo": p["titulo"],
                     "texto": p["text"],
                     "author": username,
+                    "likes": len(p["likes"])
                 })
             return posts
         return []
@@ -58,9 +59,16 @@ class Post:
             "titulo": title,
             "text": text,
             "author": author_id,
-            "fecha": now
+            "fecha": now,
+            "likes": []
         }
         # Defensive: Remove 'id' if present
         post_data.pop("id", None)
         response = User.supabase_client().table("publicaciones").insert(post_data).execute()
         return hasattr(response, "data") and bool(response.data)
+
+    @staticmethod
+    def handle_like(post_id: int):
+        db = DBBroker()
+        db.handle_like(post_id)
+        del db

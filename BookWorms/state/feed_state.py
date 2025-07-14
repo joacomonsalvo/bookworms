@@ -41,3 +41,7 @@ class FeedState(rx.State):
         """Cancel delete operation"""
         self.show_delete_confirm = False
         self.post_to_delete = None
+
+    def like(self, post_id: int):
+        Post.handle_like(post_id)
+        self.load_posts()

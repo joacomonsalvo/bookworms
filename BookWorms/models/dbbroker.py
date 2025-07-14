@@ -140,3 +140,23 @@ class DBBroker:
         else:
             return False
 
+    def handle_like(self, post_id):
+        last_username = self.supabase.table("current_user") \
+            .select("current_user") \
+            .order("id", desc=True) \
+            .limit(1) \
+            .execute().data[0]["current_user"]
+        user_id = self.supabase.table("usuarios").select("*").eq("user", last_username).execute().data[0]['id']
+
+        likes = self.supabase.table("publicaciones").select("*").eq("id", post_id).single().execute().data["likes"]
+        likes_int = list(map(int, likes)) if likes else []
+
+        if user_id in likes_int:
+            likes_int.remove(user_id)
+        else:
+            likes_int.append(user_id)
+
+        likes_str = list(map(str, likes_int))
+
+        self.supabase.table("publicaciones").update({
+            "likes": likes_str}).eq("id", post_id).execute()

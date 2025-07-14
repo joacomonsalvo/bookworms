@@ -14,14 +14,14 @@ def post_card(post: dict) -> rx.Component:
             ),
             rx.text(post["texto"]),
             rx.hstack(
-                rx.button("👍 Like", size="2"),
+                rx.button(f"👍 {post['likes']} Likes", size="2", on_click=FeedState.like(post_id=post["id"])),
                 rx.button("💬 Comentar", size="2"),
                 rx.spacer(),
                 rx.text(f"Autor: {post['author']}", font_size="1", color="gray"),
                 rx.cond(
                     AuthState.current_username == post["author"],
                     rx.button("🗑️ Eliminar", size="2", color_scheme="red",
-                              on_click=FeedState.show_delete_dialog(post["id"])),
+                              on_click=FeedState.show_delete_dialog(post_id=post["id"])),
                     rx.text("")
                 ),
             ),
