@@ -10,14 +10,13 @@ Por hacer (HACER CON MVC):
 FELI EN PROCESO:
 - Interfaz de listas, logica y guardar en DB (Esta interfaz debe de estar separada en dos partes, la izquierda que liste las listas publicas y la derecha que liste las listas privadas, con la posibilidad de crear, eliminar o acceder a dicha lista)
 - Interfaz de lista, esta vista debe listar todos los libros contenidos en una lista publica, en caso de que sea privada, debe hacer lo mismo pero ademas posibilitar eliminar un libro en especifico. Para agregar libros, debe de buscarlos y en la vista del detalle del libro agregarlo a la lista
+-Reporte 10 Libros Más Leído (funcion de supabase que corre como cron job (si se puede desde supabase) a las 00 de cada dia) -> mostrar como lista publica
 
 
 JOACO POR HACER:
--AB LIBROS (agregar como menu de navbar del feed solo para admins, basico formulario e insert a la db)
 -AB COMENTARIO
 -AB LIKE de publicacion
 -FEED SOLO DE AMIGOS Y TUYO
--Reporte 10 Libros Más Leído (funcion de supabase que corre como cron job (si se puede desde supabase) a las 00 de cada dia) -> mostrar como lista publica
 
 
 Por hacer AL FINAL:
