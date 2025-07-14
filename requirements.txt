@@ -1,11 +1,9 @@
-# requirements.txt
-reflex~=0.8.1
-httpx==0.23.3
-websockets==10.4
-supabase==1.0.3
-storage3==0.5.3
-supafunc==0.2.2
-gotrue==1.3.1
-postgrest==0.10.7
-
-python-dotenv~=1.0.0
+reflex
+httpx
+websockets
+supabase
+storage3
+supafunc
+gotrue
+postgrest
+python-dotenv
