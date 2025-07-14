@@ -160,3 +160,20 @@ class DBBroker:
 
         self.supabase.table("publicaciones").update({
             "likes": likes_str}).eq("id", post_id).execute()
+
+    def insert_comment(self, commenter_id: int, publicacion_id: int, comentario: str):
+        response = self.supabase.table("comentarios").insert({
+            "commenter_id": commenter_id,
+            "publicacion_id": publicacion_id,
+            "comentario": comentario
+        }).execute()
+        return response.data
+
+    def delete_comment(self, comment_id: int):
+        response = self.supabase.table("comentarios").delete().eq("id", comment_id).execute()
+        return response.data
+
+    def get_comments_by_post(self, publicacion_id: int) -> list[dict]:
+        response = self.supabase.table("comentarios").select("*").eq("publicacion_id", publicacion_id).order("id",
+                                                                                                             desc=False).execute()
+        return response.data

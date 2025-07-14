@@ -1,5 +1,3 @@
-# controllers/auth_controller.py
-
 from BookWorms.models.user_model import User
 from BookWorms.utils.security import hash_password, verify_password
 

@@ -1,9 +1,9 @@
 Por hacer (HACER CON MVC):
 
 - Agregar interfaz y funcionalidad de olvide mi contraseña, permitiendo recuperarla si acierta el email con el q se creo la cuenta.
--Perfil de usuario con la posibilidad de cambiar nombre de usuario con todas las validaciones pertinentes, ademas de borrar cuenta. Acceso en navbar Ajustes
--AB REVIEW -> Accesible desde libro
--Sincronización (figurativa por falta de api)
+- Perfil de usuario con la posibilidad de cambiar nombre de usuario con todas las validaciones pertinentes, ademas de borrar cuenta. Acceso en navbar Ajustes
+- AB REVIEW -> Accesible desde libro
+- Sincronización (figurativa por falta de api)
 
 
 FELI EN PROCESO:
@@ -14,7 +14,7 @@ FELI EN PROCESO:
 
 
 JOACO POR HACER:
--AB COMENTARIO
+- AB COMENTARIO
 
 
 Por hacer AL FINAL:
