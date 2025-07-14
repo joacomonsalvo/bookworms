@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: reflex-app
+    runtime: python
+    region: virginia
+    plan: free
+    branch: main
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "./start.sh"
+    autoDeploy: true
