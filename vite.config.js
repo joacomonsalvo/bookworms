@@ -2,9 +2,10 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   server: {
-    allowedHosts: ["bookworms-66mj.onrender.com"],
+    // en producción el flag 'true' permite cualquier host
+    allowedHosts: true,
   },
   preview: {
-    allowedHosts: ["bookworms-66mj.onrender.com"],
+    allowedHosts: true,
   },
 });
