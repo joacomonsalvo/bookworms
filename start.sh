@@ -8,4 +8,4 @@ reflex run \
   --env prod \
   --loglevel info \
   --backend-host 0.0.0.0 \
-  --port $PORT
+  --backend-port $PORT
