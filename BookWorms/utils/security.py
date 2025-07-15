@@ -12,4 +12,4 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 if __name__ == "__main__":
-    print(hash_password("joaquinm"))
+    print(hash_password("monsalvo"))
