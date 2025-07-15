@@ -29,10 +29,35 @@ class DBBroker:
 
         return result.data
 
-    def get_user_by_id(self, user_id: int):
-        result = self.supabase.table("usuarios").select("*").eq("id", user_id).execute()
-
-        return result.data[0] if result.data else None
+    def get_user_by_id(self, user_id):
+        """Obtiene un usuario por su ID.
+        
+        Args:
+            user_id: ID del usuario (puede ser int o str)
+            
+        Returns:
+            Dict con la información del usuario o None si no se encuentra
+        """
+        try:
+            # Convertir a entero si es posible
+            user_id = int(user_id)
+            
+            
+            result = self.supabase.table("usuarios")\
+                .select("*")\
+                .eq("id", user_id)\
+                .maybe_single()\
+                .execute()
+                
+            if not result.data:
+                print(f"No se encontró el usuario con ID: {user_id}")
+                return None
+                
+            return result.data
+            
+        except Exception as e:
+            print(f"Error al buscar usuario con ID {user_id}: {e}")
+            return None
 
     def buscar_libros(self, texto: str):
         # Armar patrón ILIKE
@@ -173,7 +198,80 @@ class DBBroker:
         response = self.supabase.table("comentarios").delete().eq("id", comment_id).execute()
         return response.data
 
-    def get_comments_by_post(self, publicacion_id: int) -> list[dict]:
-        response = self.supabase.table("comentarios").select("*").eq("publicacion_id", publicacion_id).order("id",
-                                                                                                             desc=False).execute()
-        return response.data
+    def get_comments_by_post(self, publicacion_id) -> list[dict]:
+        """Obtiene los comentarios de una publicación con información del autor.
+        
+        Args:
+            publicacion_id: ID de la publicación (puede ser int o str)
+            
+        Returns:
+            Lista de diccionarios con la información de los comentarios y sus autores
+        """
+        try:
+            # Convertir a entero si es posible, si no, devolver lista vacía
+            try:
+                publicacion_id = int(publicacion_id)
+            except (ValueError, TypeError):
+                print(f"ID de publicación inválido: {publicacion_id}")
+                return []
+                
+            print(f"Buscando comentarios para publicación ID: {publicacion_id} (tipo: {type(publicacion_id)})")
+            
+            # Primero obtenemos los comentarios de la publicación
+            try:
+                response = self.supabase.table("comentarios")\
+                    .select("*")\
+                    .eq("publicacion_id", publicacion_id)\
+                    .order("id", desc=False)\
+                    .execute()
+                
+                if not response.data:
+                    print(f"No se encontraron comentarios para la publicación {publicacion_id}")
+                    return []
+                    
+                    
+            except Exception as query_error:
+                print(f"Error en la consulta de comentarios: {query_error}")
+                return []
+                
+            # Procesamos los comentarios para incluir el nombre de usuario
+            comments = []
+            for comment in response.data:
+                try:
+                    # Obtener información del usuario por separado
+                    commenter_id = comment.get('commenter_id')
+                    author_username = 'Usuario desconocido'
+                    
+                    if commenter_id is not None:
+                        try:
+                            user_data = self.get_user_by_id(commenter_id)
+                            if user_data and 'user' in user_data:  # Nota: en get_user_by_id el campo es 'user' no 'username'
+                                author_username = user_data['user']
+                        except Exception as user_error:
+                            print(f"Error al cargar usuario {commenter_id}: {user_error}")
+                    
+                    comments.append({
+                        'id': comment.get('id'),
+                        'commenter_id': commenter_id,
+                        'publicacion_id': comment.get('publicacion_id'),
+                        'comentario': comment.get('comentario', ''),
+                        'created_at': comment.get('created_at'),
+                        'author': author_username
+                    })
+                except Exception as e:
+                    print(f"Error procesando comentario {comment.get('id')}: {e}")
+                    comments.append({
+                        'id': comment.get('id'),
+                        'commenter_id': comment.get('commenter_id'),
+                        'publicacion_id': comment.get('publicacion_id'),
+                        'comentario': comment.get('comentario', ''),
+                        'created_at': comment.get('created_at'),
+                        'author': 'Usuario desconocido'
+                    })
+                    continue
+                    
+            return comments
+            
+        except Exception as e:
+            print(f"Error al obtener comentarios para la publicación {publicacion_id}: {e}")
+            return []

@@ -15,7 +15,10 @@ def post_card(post: dict) -> rx.Component:
             rx.text(post["texto"]),
             rx.hstack(
                 rx.button(f"👍 {post['likes']} Likes", size="2", on_click=FeedState.like(post_id=post["id"])),
-                rx.button("💬 Comentar", size="2"),
+                rx.link(
+                    rx.button("💬 Comentar", size="2"),
+                    href=f"/comments/{post['id']}"
+                ),
                 rx.spacer(),
                 rx.text(f"Autor: {post['author']}", font_size="1", color="gray"),
                 rx.cond(

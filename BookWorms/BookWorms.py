@@ -4,6 +4,8 @@ from BookWorms.views.login_view import login_view
 from BookWorms.views.signup_view import signup_view
 from BookWorms.views.feed_view import feed_page
 from BookWorms.views.new_post_view import new_post_view
+from BookWorms.views.comments_view import comments_page
+from BookWorms.state.comments_state import CommentsState
 from BookWorms.views.search_result_view import search_result_page
 from BookWorms.views.amigos_view import amigos_view
 from BookWorms.views.listas_view import listas_view
@@ -34,3 +36,10 @@ app.add_page(search_result_page, route="/search", title="Resultado Busqueda - Bo
 app.add_page(listas_view, route="/listas", title="Listas - BookWorms")
 app.add_page(amigos_view, route="/amigos", title="Amigos - BookWorms")
 app.add_page(ab_libros_view, route="/ab_libro", title="AB Libro - BookWorms")
+# Add comments page with route parameter
+app.add_page(
+    comments_page, 
+    route="/comments/[post_id]",
+    title="Comentarios - BookWorms",
+    on_load=CommentsState.load_comments
+)
