@@ -9,7 +9,3 @@ def hash_password(password: str) -> str:
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return hash_password(plain_password) == hashed_password
-
-
-if __name__ == "__main__":
-    print(hash_password("monsalvo"))
