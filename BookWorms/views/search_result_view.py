@@ -12,7 +12,7 @@ def render_book_card(book) -> rx.Component:
             rx.text(f"Autor: {book['autor']}"),
             rx.text(f"Editorial: {book['editorial']}"),
             rx.text(book["sinopsis"]),
-            rx.button("Agregar a lista privada", color_scheme="green", size="2"),
+            # rx.button("Agregar a lista privada", color_scheme="green", size="2"),
         ),
         margin_y="1rem",
     )

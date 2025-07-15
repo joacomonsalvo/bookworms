@@ -21,10 +21,6 @@ class SearchState(rx.State):
         self.buscar()
         return rx.redirect("/search")
 
-        # """Estado para búsqueda de libros por título."""
-        # query: str = ""
-        # results: list = []
-
     def set_query(self, value: str) -> None:
         """Actualiza el término de búsqueda."""
         self.query = value

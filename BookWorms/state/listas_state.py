@@ -1,6 +1,7 @@
 import reflex as rx
 from postgrest import APIError
 from BookWorms.models.dbbroker import DBBroker
+from BookWorms.state.auth_state import AuthState
 
 
 class ListasState(rx.State):
@@ -37,9 +38,9 @@ class ListasState(rx.State):
             db = DBBroker()
             username = db.get_last_current_user()
             user_id = db.get_user_by_username(str(username))[0]['id']
+            es_admin = db.get_user_es_admin_by_id(user_id)
 
             resp_priv = broker.from_("listas_privadas").select("*").eq("user_id", user_id).execute()
-            # resp_priv = broker.from_("listas_privadas").select("*").execute()
             self.private_lists = resp_priv.data or []
 
         except APIError as e:
@@ -174,13 +175,16 @@ class ListasState(rx.State):
         username = db.get_last_current_user()
         user_id = db.get_user_by_username(str(username))[0]['id']
 
-        table = "listas_publicas" if self.new_list_type.lower() == "publica" else "listas_privadas"
+        is_public = self.new_list_type.lower() == "publica"
+        table = "listas_publicas" if is_public else "listas_privadas"
+
+        # Solo agregamos user_id cuando es privada
+        data = {"titulo": self.new_list_title}
+        if not is_public:
+            data["user_id"] = user_id
 
         try:
-            broker.from_(table).insert({
-                "titulo": self.new_list_title,
-                "user_id": user_id,
-            }).execute()
+            broker.from_(table).insert(data).execute()
             self.close_new_list_modal()
             self.load_all()
         except APIError as e:

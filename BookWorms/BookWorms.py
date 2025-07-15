@@ -10,6 +10,7 @@ from BookWorms.views.search_result_view import search_result_page
 from BookWorms.views.amigos_view import amigos_view
 from BookWorms.views.listas_view import listas_view
 from BookWorms.views.ab_libro_view import ab_libros_view
+from BookWorms.views.reportes_view import reportes_view
 
 
 def index() -> rx.Component:
@@ -36,6 +37,7 @@ app.add_page(search_result_page, route="/search", title="Resultado Busqueda - Bo
 app.add_page(listas_view, route="/listas", title="Listas - BookWorms")
 app.add_page(amigos_view, route="/amigos", title="Amigos - BookWorms")
 app.add_page(ab_libros_view, route="/ab_libro", title="AB Libro - BookWorms")
+app.add_page(reportes_view, route="/reportes", title="Reportes - BookWorms")
 # Add comments page with route parameter
 app.add_page(
     comments_page, 

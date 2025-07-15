@@ -1,5 +1,6 @@
 from BookWorms.models.user_model import User
 from BookWorms.utils.security import hash_password, verify_password
+from BookWorms.models.dbbroker import DBBroker
 
 
 class AuthController:
@@ -15,6 +16,11 @@ class AuthController:
         user = User.create_user(email, username, password)
         if not user:
             return False, "Failed to create user."
+
+        user_id = user["id"]
+        broker = DBBroker()
+        broker.create_default_private_lists(user_id)
+
         return True, "Registration successful."
 
     @staticmethod
@@ -27,4 +33,10 @@ class AuthController:
         if not verify_password(password, user[0]['passw']):
             return False, "Invalid credentials.", {}
 
-        return True, "Login successful.", user[0]
+        # return True, "Login successful.", user[0]
+        u = user[0]
+        return True, "Login successful.", {
+            "id": u["id"],
+            "user": u["user"],
+            "es_admin": u.get("es_admin", False)  # garantizamos
+        }

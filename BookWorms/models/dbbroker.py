@@ -41,8 +41,7 @@ class DBBroker:
         try:
             # Convertir a entero si es posible
             user_id = int(user_id)
-            
-            
+
             result = self.supabase.table("usuarios")\
                 .select("*")\
                 .eq("id", user_id)\
@@ -228,8 +227,7 @@ class DBBroker:
                 if not response.data:
                     print(f"No se encontraron comentarios para la publicación {publicacion_id}")
                     return []
-                    
-                    
+
             except Exception as query_error:
                 print(f"Error en la consulta de comentarios: {query_error}")
                 return []
@@ -275,3 +273,83 @@ class DBBroker:
         except Exception as e:
             print(f"Error al obtener comentarios para la publicación {publicacion_id}: {e}")
             return []
+
+    def get_user_es_admin_by_id(self, user_id: int):
+        result = self.supabase.table("usuarios").select("es_admin").eq("id", user_id).execute()
+
+        return result.data[0].get("es_admin", False) if result.data else None
+
+    # Crea una lista privada para un usuario
+    def create_private_list(self, user_id: int, title: str) -> None:
+        self.supabase.table("listas_privadas").insert({
+            "user_id": user_id,
+            "titulo": title
+        }).execute()
+
+    # Crea las tres listas por defecto
+    """def create_default_private_lists(self, user_id: int) -> None:
+        for title in ["Libros Leídos", "Libros Leyendo", "Libros por Leer"]:
+            self.create_private_list(user_id, title)"""
+
+    def create_default_private_lists(self, user_id: int) -> None:
+        titles = ["Libros Leídos", "Libros Leyendo", "Libros por Leer"]
+        for title in titles:
+            try:
+                res = (
+                    self.supabase
+                    .table("listas_privadas")
+                    .insert({"user_id": user_id, "titulo": title})
+                    .execute()
+                )
+                # print(f"Crear lista “{title}” para {user_id} → filas: {len(res.data or [])}, data: {res.data}")
+            except Exception as e:
+                raise RuntimeError(f"Error creando lista “{title}”: {e}")
+
+    # PARA DEBUG
+    def get_private_lists(self, user_id: int) -> list[dict]:
+        """Devuelve todas las listas privadas de un usuario."""
+        try:
+            result = (
+                self.supabase
+                .table("listas_privadas")
+                .select("*")
+                .eq("user_id", user_id)
+                .execute()
+            )
+            # print(f"DEBUG private lists for {user_id} →", result.data)
+            return result.data or []
+
+        except Exception as e:
+            # print(f"Error al obtener listas privadas para {user_id}: {e}")
+            return []
+
+    def insert_current_user_es_admin(self, current_user: str, es_admin: bool):
+        result = self.supabase.table("current_user").update({"es_admin": es_admin}).eq("current_user", current_user).execute()
+
+        return result.data
+
+    def reporte_general(self, report_name: str) -> list[dict]:
+        res = (
+            self.supabase
+            .rpc("reporte_general", {"report_name": report_name})
+            .execute()
+        )
+        return res.data or []
+
+    def reporte_libros_mas_leidos(self) -> list[dict]:
+        """Llama al RPC SQL reporte_libros_mas_leidos."""
+        # res = self.supabase.rpc("reporte_libros_mas_leidos").execute()
+        res = self.supabase.rpc("reporte_libros_mas_leidos", {}).execute()
+        return res.data or []
+
+    def reporte_libros_por_leer(self) -> list[dict]:
+        """Llama al RPC SQL reporte_libros_por_leer."""
+        # res = self.supabase.rpc("reporte_libros_por_leer").execute()
+        res = self.supabase.rpc("reporte_libros_por_leer", {}).execute()
+        return res.data or []
+
+    def reporte_usuarios_seguidos(self) -> list[dict]:
+        """Llama al RPC SQL reporte_usuarios_mas_seguidos."""
+        # res = self.supabase.rpc("reporte_usuarios_mas_seguidos").execute()
+        res = self.supabase.rpc("reporte_usuarios_mas_seguidos", {}).execute()
+        return res.data or []

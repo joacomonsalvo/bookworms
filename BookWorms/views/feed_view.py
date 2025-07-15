@@ -44,7 +44,6 @@ def render_result_card(item) -> rx.Component:
         data = {}
 
     if "titulo" in data:
-        # Es un libro
         return rx.card(
             rx.vstack(
                 rx.heading(data.get("titulo", "Sin título"), size="4"),
@@ -54,7 +53,6 @@ def render_result_card(item) -> rx.Component:
             margin_y="1rem"
         )
     elif "user" in data:
-        # Es un usuario
         return rx.card(
             rx.vstack(
                 rx.heading(data.get("user", "Usuario desconocido"), size="4"),
@@ -63,7 +61,6 @@ def render_result_card(item) -> rx.Component:
             margin_y="1rem"
         )
     else:
-        # Por si llega un dato inesperado
         return rx.text("Elemento no reconocido")
 
 
@@ -85,6 +82,7 @@ def feed_page() -> rx.Component:
     return rx.box(
         feed_view(),
         delete_confirmation_dialog(),
+        change_password_confirmation_dialog(),
         logout_confirmation_dialog(),
         on_mount=AuthState.load_auth_from_storage,
     )
@@ -124,7 +122,7 @@ def delete_confirmation_dialog() -> rx.Component:
             left="0",
             right="0",
             bottom="0",
-            bg="rgba(0, 0, 0, 0.6)",
+            bg="rgba(0, 0, 0, 5)",
             z_index="999",
             on_click=FeedState.cancel_delete,
         ),
@@ -169,4 +167,49 @@ def logout_confirmation_dialog() -> rx.Component:
             on_click=AuthState.cancel_logout,
         ),
         rx.text("")
+    )
+
+
+def change_password_confirmation_dialog() -> rx.Component:
+    return rx.cond(
+        AuthState.change_pass_dialog_open,
+        rx.fragment(
+            rx.box(
+                position="fixed", top="0", left="0", right="0", bottom="0", bg="rgba(0, 0, 0, 0.6)", z_index="999", on_click=AuthState.cancel_change_password),
+            rx.box(
+                rx.vstack(
+                    rx.heading("Cambiar Contraseña", size="4"),
+                    rx.text(AuthState.message, color="red.500", mb="3"),
+                    rx.input(
+                        placeholder="Nueva Contraseña",
+                        type_="password",
+                        value=AuthState.new_password,
+                        on_change=AuthState.set_new_password,
+                        mb="3",
+                    ),
+                    rx.input(
+                        placeholder="Reingrese Nueva Contraseña",
+                        type_="password",
+                        value=AuthState.confirm_password,
+                        on_change=AuthState.set_confirm_password,
+                        mb="4",
+                    ),
+                    rx.hstack(
+                        rx.button(
+                            "Cancelar",
+                            on_click=AuthState.cancel_change_password,
+                        ),
+                        rx.button(
+                            "Aceptar",
+                            color_scheme="red",
+                            on_click=AuthState.change_password,
+                            ml="3",
+                        ),
+                    ),
+                    spacing="4", padding="2rem", bg="var(--chakra-colors-chakra-body-bg)", color="var(--chakra-colors-chakra-body-text)", border_radius="xl", box_shadow="2xl", max_width="400px",
+                ),
+                position="fixed", top="50%", left="50%", transform="translate(-50%, -50%)", z_index="1000",
+            ),
+        ),
+        rx.fragment(),
     )
